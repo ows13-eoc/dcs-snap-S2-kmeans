@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="us-ascii"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="application">
+  <jobTemplates>
+    <jobTemplate id="snap">
+      <streamingExecutable>/application/snap/run</streamingExecutable>
+      <defaultParameters>
+        <parameter id="sourceBands" title="Source bands" abstract="Source bands" maxOccurs="1" scope="runtime" type="LiteralData">B2,B3,B4</parameter>
+        <parameter id="upsampling" title="Upsampling method" abstract="Upsampling method" maxOccurs="1" scope="runtime" type="LiteralData">
+          <options>
+            <option>Nearest</option>
+            <option>Bilinear</option>
+            <option>Bicubic</option>
+            <default>Nearest</default>
+          </options>
+        </parameter>
+        <parameter id="downsampling" title="Downsampling method" abstract="Downsampling method" maxOccurs="1" scope="runtime" type="LiteralData">
+          <options>
+            <option>First</option>
+            <option>Min</option>
+            <option>Max</option>
+            <option>Mean</option>
+            <option>Median</option>
+            <default>First</default>
+          </options>
+        </parameter>
+        <parameter id="flagDownsampling" title="Flag downsampling method" abstract="Flag downsampling method" maxOccurs="1" scope="runtime" type="LiteralData">
+          <options>
+            <option>First</option>
+            <option>FlagAnd</option>
+            <option>FlagOr</option>
+            <option>FlagMedianOr</option>
+            <option>FlagMedianAnd</option>
+            <default>First</default>
+          </options>
+        </parameter>
+        <parameter id="resampleOnPyramidLevels" title="Resample on pyramid levels (for faster imaging)" abstract="Resample on pyramid levels (for faster imaging)" maxOccurs="1" scope="runtime" type="LiteralData">
+          <options>
+            <option>true</option>
+            <option>false</option>
+            <default>true</default>
+          </options>
+        </parameter>
+        <parameter id="targetResolution" title="Target resolution" abstract="Target resolution" maxOccurs="1" scope="runtime" type="LiteralData">
+          <options>
+            <option>60</option>
+            <option>20</option>
+            <option>10</option>
+            <default>60</default>
+          </options>
+        </parameter>
+        <parameter id="clusterCount" title="Number of clusters" abstract="Number of clusters" maxOccurs="1" scope="runtime" type="LiteralData">14</parameter>
+        <parameter id="iterationCount" title="Number of iterations" abstract="Number of iterations" maxOccurs="1" scope="runtime" type="LiteralData">30</parameter>
+        <parameter id="randomSeed" title="Random seed" abstract="Random seed" maxOccurs="1" scope="runtime" type="LiteralData">31415</parameter>
+        <parameter id="sourceBandNames" title="Source band names" abstract="Source band names for k-means operator" maxOccurs="1" scope="runtime" type="LiteralData">B2,B3,B4</parameter>
+      </defaultParameters>
+      <defaultJobconf>
+        <property id="mapred.task.timeout">9900000000000</property>
+      </defaultJobconf>
+    </jobTemplate>
+  </jobTemplates>
+  <workflow id="workflow" title="SNAP application" abstract="SNAP application">
+    <workflowVersion>1.0</workflowVersion>
+    <node id="snap">
+      <job id="snap"/>
+      <sources>
+        <source id="source" title="Sentinel-2 references" abstract="List of Sentinel-2 references" refid="string:list" scope="runtime">https://catalog.terradue.com//e-learning/search?uid=S2A_OPER_PRD_MSIL1C_PDMC_20161119T215754_R081_V20161119T133222_20161119T133222</source>
+      </sources>
+    </node>
+  </workflow>
+</application>

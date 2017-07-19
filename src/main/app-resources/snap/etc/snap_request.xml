@@ -1,0 +1,58 @@
+<graph id="Graph">
+  <version>1.0</version>
+  <node id="BandSelect">
+    <operator>BandSelect</operator>
+    <sources>
+      <sourceProduct refid="Read"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <selectedPolarisations/>
+<sourceBands>${sourceBands}</sourceBands>
+      <bandNamePattern/>
+    </parameters>
+  </node>
+  <node id="Resample">
+    <operator>Resample</operator>
+    <sources>
+      <sourceProduct refid="BandSelect"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <referenceBand/>
+      <targetResolution>${targetResolution}</targetResolution>
+      <upsampling>${upsampling}</upsampling>
+      <downsampling>${downsampling}</downsampling>
+      <flagDownsampling>${flagDownsampling}</flagDownsampling>
+      <resampleOnPyramidLevels>${resampleOnPyramidLevels}</resampleOnPyramidLevels>
+    </parameters>
+  </node>
+  <node id="KMeansClusterAnalysis">
+    <operator>KMeansClusterAnalysis</operator>
+    <sources>
+      <sourceProduct refid="Resample"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <clusterCount>${clusterCount}</clusterCount>
+      <iterationCount>${iterationCount}</iterationCount>
+      <randomSeed>${randomSeed}</randomSeed>
+<sourceBandNames>${sourceBandNames}</sourceBandNames>
+      <roiMaskName/>
+    </parameters>
+  </node>
+  <node id="Read">
+    <operator>Read</operator>
+    <sources/>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>${in}</file>
+    </parameters>
+  </node>
+  <node id="Write">
+    <operator>Write</operator>
+    <sources>
+      <sourceProduct refid="KMeansClusterAnalysis"/>
+    </sources>
+    <parameters class="com.bc.ceres.binding.dom.XppDomElement">
+      <file>${out}</file>
+      <formatName>BEAM-DIMAP</formatName>
+    </parameters>
+  </node>
+</graph>
