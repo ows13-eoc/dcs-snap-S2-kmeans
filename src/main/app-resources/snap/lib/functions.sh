@@ -66,7 +66,7 @@ function main() {
   
   cd ${TMPDIR}
 
-  num_steps=7
+  num_steps=6
 
   ciop-log "INFO" "(1 of ${num_steps}) Resolve Sentinel-2 online resource"
   online_resource="$( opensearch-client ${input} enclosure )"
@@ -95,21 +95,27 @@ function main() {
   ciop-log "INFO" "(4 of ${num_steps}) Compress results"  
   tar -C ${TMPDIR} -czf ${out}.tgz $( basename ${out}).dim $( basename ${out}).data || return ${ERR_COMPRESS}
   ciop-publish -m ${out}.tgz || return ${ERR_PUBLISH}  
-   
-  ciop-log "INFO" "(5 of ${num_steps}) Convert to geotiff"
-  # Convert to GeoTIFF
-  gdal_translate ${out}.data/class_indices.img ${out}.tif || return ${ERR_GDAL}
-  ciop-publish -m ${out}.tif || return ${ERR_PUBLISH}
-  
-  ciop-log "INFO" "(6 of ${num_steps}) Convert to PNG"
-  gdal_translate -of PNG -a_nodata 0 -scale 0 1 0 255 ${out}.tif ${out}.png || return ${ERR_GDAL_QL}
-  ciop-publish -m ${out}.png || return ${ERR_PUBLISH}
-  
-  listgeo -tfw ${out}.tif || return ${ERR_GEO_QL}
-  mv ${out}.tfw ${out}.pngw
-  ciop-publish -m ${out}.pngw || return ${ERR_PUBLISH}
  
-  ciop-log "INFO" "(7 of ${num_steps}) Clean up" 
+  ciop-log "INFO" "(5 of ${num_steps}) Convert to geotiff and PNG image formats"
+
+  # Convert to GeoTIFF
+  for img in $( find ${out}.data -name '*.img' )
+  do
+    target=${out}_$( basename ${img} | sed 's/.img//' )
+
+    gdal_translate ${img} ${target}.tif || return ${ERR_GDAL}
+    ciop-publish -m ${target}.tif || return ${ERR_PUBLISH}
+
+    gdal_translate -of PNG -a_nodata 0 -scale 0 1 0 255 ${target}.tif ${target}.png || return ${ERR_GDAL_QL}
+    ciop-publish -m ${target}.png || return ${ERR_PUBLISH}
+
+    listgeo -tfw ${target}.tif || return ${ERR_GEO_QL}
+    mv ${target}.tfw ${target}.pngw
+    ciop-publish -m ${target}.pngw || return ${ERR_PUBLISH}
+
+  done
+ 
+  ciop-log "INFO" "(6 of ${num_steps}) Clean up" 
   # clean-up
   rm -fr ${local_s2}
   rm -fr ${out}*
