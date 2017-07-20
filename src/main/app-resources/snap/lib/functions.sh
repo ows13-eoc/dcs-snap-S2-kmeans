@@ -45,10 +45,15 @@ function set_env() {
 
   params=$( xmlstarlet sel -T -t -m "//parameters/*" -v . -n ${SNAP_REQUEST} | grep '${' | grep -v '${in}' | grep -v '${out}' | sed 's/\${//' | sed 's/}//' )
 
+  touch ${TMPDIR}/snap.params
+
   for param in ${params} 
   do 
-    echo "$param=$( ciop-getparam $param)" >> ${TMPDIR}/snap.params
+    value="$( ciop-getparam $param)"
+    [[ ! -z "${value}" ]] && echo "$param=${value}" >> ${TMPDIR}/snap.params
   done
+
+  ciop-publish -m ${TMPDIR}/snap.params
 
   export SNAP_HOME=/opt/snap
   export PATH=${SNAP_HOME}/bin:${PATH}
