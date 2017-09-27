@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
+  <groupId>com.terradue</groupId>
+  <artifactId>dcs-snap-S2-kmeans</artifactId>
   <packaging>pom</packaging>
-  <name>${artifactId}</name>
+  <name>dcs-snap-S2-kmeans</name>
   <parent>
     <groupId>com.terradue</groupId>
     <artifactId>dcs-bash-parent</artifactId>
     <version>2.0.0</version>
   </parent>
-  <description>${description}</description>
-  <version>${version}</version>
+  <description>dcs-snap-S2-kmeans</description>
+  <version>0.9-SNAPSHOT</version>
   <properties>
-    <summary>${summary}</summary>
-    <description>${description}</description>
-    <community>${community}</community>
-    <yumRepo>${community}</yumRepo>
+    <summary>dcs-snap-S2-kmeans</summary>
+    <description>dcs-snap-S2-kmeans</description>
+    <community>ows13-eoc</community>
+    <yumRepo>ows13-eoc</yumRepo>
   </properties>
   <scm>
-    <connection>scm:git:ssh://git@github.com/${community}/${artifactId}</connection>
-    <developerConnection>scm:git:ssh://git@github.com/${community}/${artifactId}</developerConnection>
-    <url>https://github.com/${community}/${artifactId}</url>
+    <connection>scm:git:ssh://git@github.com/ows13-eoc/dcs-snap-S2-kmeans</connection>
+    <developerConnection>scm:git:ssh://git@github.com/ows13-eoc/dcs-snap-S2-kmeans</developerConnection>
+    <url>https://github.com/ows13-eoc/dcs-snap-S2-kmeans</url>
     <tag>HEAD</tag>
   </scm>
   <profiles>
